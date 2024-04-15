@@ -40,8 +40,7 @@ class Server:
 
     def rssRequest(self):
         try:
-            rss_data = feedparser.parse(requests.get("http://127.0.0.1:3000").text)
-            # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
+            rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
             return rss_data
         except requests.RequestException as e:
             print("请求出现错误")
