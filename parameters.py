@@ -1,7 +1,7 @@
 # parameters 参数变量
 
 # Aira地址，默认端口为16800
-aira_link="http://192.168.31.236:16800/jsonrpc"
+aria_link="http://192.168.31.236:16800/jsonrpc"
 
 # Aria密钥，没有留空
 aria_secret=""
