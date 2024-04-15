@@ -38,9 +38,21 @@ class Server:
             print("下载: "+item["title"])
             self.downloadHandler(item["url"])
 
+    def rssRequest(self):
+        try:
+            rss_data = feedparser.parse(requests.get("http://127.0.0.1:3000").text)
+            # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
+            return rss_data
+        except requests.RequestException as e:
+            print("请求出现错误")
+            return ""
+
     def loop(self):
         # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
-        rss_data=feedparser.parse(requests.get("http://127.0.0.1:3000").text)
+        # # rss_data=feedparser.parse(requests.get("http://127.0.0.1:3000").text)
+        rss_data=self.rssRequest()
+        if len(rss_data)==0:
+            return
         rss_list=[]
         for item in rss_data.entries:
             rss_list.append({
