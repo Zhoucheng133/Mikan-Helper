@@ -47,8 +47,6 @@ class Server:
             return ""
 
     def loop(self):
-        # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
-        # # rss_data=feedparser.parse(requests.get("http://127.0.0.1:3000").text)
         rss_data=self.rssRequest()
         if len(rss_data)==0:
             return
@@ -70,7 +68,7 @@ class Server:
     async def mainLoop(self):
         while True:
             self.loop()
-            await asyncio.sleep(5)
+            await asyncio.sleep(parameters.update_freq*60)
 
 
 
