@@ -56,8 +56,7 @@ class Server:
 
     def rssRequest(self):
         try:
-            # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
-            rss_data=feedparser.parse(requests.get("http://localhost:3000").text)
+            rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
             return rss_data
         except requests.RequestException as e:
             self.setLog("err", "请求出错")
@@ -87,8 +86,7 @@ class Server:
     async def mainLoop(self):
         while True:
             self.loop()
-            # await asyncio.sleep(parameters.update_freq*60)
-            await asyncio.sleep(5)
+            await asyncio.sleep(parameters.update_freq*60)
 
 app = Flask(__name__)
 CORS(app)
