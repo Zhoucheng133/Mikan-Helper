@@ -4,6 +4,8 @@
 
 如果你希望在一般的系统中使用，你可以尝试使用[Motrix](https://motrix.app/)，如果你在服务器上使用，建议使用Docker安装Aria2
 
+本项目由Python & React开发
+
 ### 通用步骤
 - 安装[Python3](https://www.python.org/)
 - 安装所需要的依赖，你也可以手动安装
