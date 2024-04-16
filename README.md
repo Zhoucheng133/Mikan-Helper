@@ -13,6 +13,9 @@
   # 根据你的Python安装方式，也有可能为
   pip install requests
   pip install feedparser
+  # 如果你的Python是通过Linux apt安装的，也有可能为
+  apt install python3-requests
+  apt install python3-feedparser
   ```
 - 编辑本项目中的`parameters.py`，如果没有务必自行创建:
   ```py
@@ -57,3 +60,7 @@
 这里以使用Docker安装Aria2为例
 
 注意保存自己设定的端口号 (对应容器的端口号为PRC_PORT) 和 RPC_SECRET
+
+## 查看日志
+
+你可以通过访问`http://<ip地址>:8811`来查看日志
