@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+}
+
+.bg {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logPanel {
+  width: 800px;
+  height: 450px;
+  /* background-color: red; */
+  border-radius: 10px;
+  border: 1px solid;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.title{
+  font-size: 20px;
+  font-weight: bold;
+}
+.logList{
+  margin-top: 10px;
+  flex: 1;
+  overflow: auto;
+}
+.logItem{
+  display: grid;
+  grid-template-columns: 50px auto 180px;
+  align-items: center;
+  user-select: none;
+  height: 40px;
+}
