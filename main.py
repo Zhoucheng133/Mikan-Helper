@@ -2,9 +2,10 @@ import parameters
 import requests
 import feedparser
 import asyncio
-from flask import Flask
+from flask import Flask, send_file
 import datetime
 from threading import Thread
+from flask_cors import CORS
 
 log=[]
 
@@ -33,7 +34,7 @@ class Server:
 
     def setLog(self, logtype, val):
         current_time=datetime.datetime.now()
-        if len(log)>=10:
+        if len(log)>=50:
             log.pop(0)
         log.append({
             "type": logtype,
@@ -55,7 +56,8 @@ class Server:
 
     def rssRequest(self):
         try:
-            rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
+            # rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
+            rss_data=feedparser.parse(requests.get("http://localhost:3000").text)
             return rss_data
         except requests.RequestException as e:
             self.setLog("err", "请求出错")
@@ -85,13 +87,18 @@ class Server:
     async def mainLoop(self):
         while True:
             self.loop()
-            await asyncio.sleep(parameters.update_freq*60)
+            # await asyncio.sleep(parameters.update_freq*60)
+            await asyncio.sleep(5)
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api')
-def hello():
+def api():
     return log
+
+def home():
+    return send_file('connector-ui/dist/index.html')
 
 if __name__ == "__main__":
 

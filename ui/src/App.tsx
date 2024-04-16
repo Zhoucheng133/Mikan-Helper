@@ -17,7 +17,7 @@ function App() {
   const [list, setList]=useState<log[]>([]);
 
   const getLog=async ()=>{
-    const response=await axios.get("http://localhost:8811/api");
+    const response=await axios.get("/api");
     // console.log(response.data);
     setList(response.data);
   }
