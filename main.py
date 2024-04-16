@@ -89,7 +89,7 @@ class Server:
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/api')
 def hello():
     return log
 
