@@ -5,7 +5,6 @@ import asyncio
 from flask import Flask, send_from_directory, send_file
 import datetime
 from threading import Thread
-from flask_cors import CORS
 
 log=[]
 
@@ -89,7 +88,6 @@ class Server:
             await asyncio.sleep(parameters.update_freq*60)
 
 app = Flask(__name__)
-CORS(app)
 
 @app.route('/api')
 def api():
