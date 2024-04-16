@@ -2,7 +2,7 @@ import parameters
 import requests
 import feedparser
 import asyncio
-from flask import Flask, send_file
+from flask import Flask, send_from_directory, send_file
 import datetime
 from threading import Thread
 from flask_cors import CORS
@@ -97,8 +97,14 @@ CORS(app)
 def api():
     return log
 
+@app.route('/')
 def home():
-    return send_file('connector-ui/dist/index.html')
+    return send_from_directory('ui/dist', "index.html")
+
+@app.route('/assets/<path:path>')
+def assets(path):
+    return send_file("ui/dist/assets/"+path)
+
 
 if __name__ == "__main__":
 
