@@ -15,17 +15,31 @@ function App() {
   }
 
   const [list, setList]=useState<log[]>([]);
+  const [selected, setSelected]=useState<string>("");
 
   const getLog=async ()=>{
-    const response=await axios.get("/api");
-    // console.log(response.data);
+    // const response=await axios.get("/api");
+    const response=await axios.get("http://localhost:3000/item");
     setList(response.data.reverse());
+  }
+
+  const filter=(val: string)=>{
+    if(selected==val){
+      setSelected("")
+    }else{
+      setSelected(val);
+    }
   }
 
   return (
     <div className="bg">
       <div className="logPanel">
-        <div className="title">Mikan Connector Log Panel</div>
+        <div className="titleBar">
+          <div className="title">Mikan Connector Log Panel</div>
+          <div className={selected=="err" ? "bt_selected" : "bt"} onClick={()=>filter("err")} style={{marginLeft: "auto"}}>失败内容</div>
+          <div className={selected=="ok" ? "bt_selected" : "bt"} onClick={()=>filter("ok")}>成功内容</div>
+          <div className={selected=="download" ? "bt_selected" : "bt"} onClick={()=>filter("download")}>下载内容</div>
+        </div>
         <div className="logList">
           {
             list.map((item)=>{

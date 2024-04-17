@@ -40,3 +40,25 @@ body {
   user-select: none;
   height: 40px;
 }
+.titleBar{
+  display: flex;
+  align-items: center;
+}
+.bt:hover{
+  background-color: #dcf6ff;
+}
+.bt, .bt_selected{
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color .2s linear;
+  margin-right: 15px;
+}
+.bt_selected{
+  background-color: #abe8ff;
+}
