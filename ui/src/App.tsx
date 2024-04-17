@@ -31,6 +31,30 @@ function App() {
     }
   }
 
+  const filterItem=(val: log)=>{
+    if(selected==""){
+      return true;
+    }else if(selected=="ok"){
+      if(val.type=="ok"){
+        return true;
+      }else{
+        return false;
+      }
+    }else if(selected=="err"){
+      if(val.type=="err"){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      if(val.val.includes("下载")){
+        return true;
+      }else{
+        return false;
+      }
+    }
+  }
+
   return (
     <div className="bg">
       <div className="logPanel">
@@ -43,11 +67,13 @@ function App() {
         <div className="logList">
           {
             list.map((item)=>{
-              return <div className="logItem" key={item.time}>
-                <div className="logType" style={{color: item.type=="ok"?"lime":"red"}} >{item.type}</div>
-                <div className="logVal">{item.val}</div>
-                <div className="logTime">{item.time}</div>
-              </div>
+              if(filterItem(item)){
+                return <div className="logItem" key={item.time}>
+                  <div className="logType" style={{color: item.type=="ok"?"lime":"red"}} >{item.type}</div>
+                  <div className="logVal">{item.val}</div>
+                  <div className="logTime">{item.time}</div>
+                </div>
+              }
             })
           }
         </div>
