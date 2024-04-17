@@ -44,18 +44,31 @@ class Server:
     def judge(self):
         newItems = [item for item in self.ls if item not in self.pre_ls]
         download_ls=[]
-        for item in newItems:
-            if not any(exclude in item['title'] for exclude in parameters.exclude):
-                if any(item['title'].replace("  ", " ").startswith(prefix) for prefix in parameters.start_with):
+        if(parameters.subscript_mode==True):
+            for item in newItems:
+                if not any(exclude in item['title'] for exclude in parameters.exclude):
+                    if any(item['title'].replace("  ", " ").startswith(prefix) for prefix in parameters.start_with):
+                        download_ls.append(item)
+        else:
+            for item in newItems:
+                if not any(exclude in item['title'] for exclude in parameters.exclude):
                     download_ls.append(item)
+        
+
         for item in download_ls:
             print("下载: "+item["title"])
             self.setLog("ok", "下载: "+item["title"])
             self.downloadHandler(item["url"])
+    
+    def rsslink(self):
+        if parameters.subscript_mode==True:
+            return parameters.subscript_url
+        else:
+            return "https://mikanime.tv/RSS/Classic"
 
     def rssRequest(self):
         try:
-            rss_data=feedparser.parse(requests.get("https://mikanime.tv/RSS/Classic").text)
+            rss_data=feedparser.parse(requests.get(self.rsslink()).text)
             return rss_data
         except requests.RequestException as e:
             self.setLog("err", "请求出错")
