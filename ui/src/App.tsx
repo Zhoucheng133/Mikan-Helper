@@ -19,7 +19,7 @@ function App() {
   const getLog=async ()=>{
     const response=await axios.get("/api");
     // console.log(response.data);
-    setList(response.data);
+    setList(response.data.reverse());
   }
 
   return (
