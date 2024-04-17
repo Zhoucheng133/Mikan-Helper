@@ -48,6 +48,8 @@
   python3 main.py
   # 根据你的Python3安装方式也有可能为
   python main.py
+  # 在Linux中如果你想要保持后台运行，可以执行
+  nohup python3 main.py&
   ```
 
 ### 如果使用Motrix
