@@ -7,7 +7,7 @@
 本项目由Python & React开发
 
 ### 通用步骤
-- 安装[Python3](https://www.python.org/)
+- 安装[Python3](https://www.python.org/)，你可以通过官网下载安装，或者Linux的`apt`进行安装
 - 安装所需要的依赖，你也可以手动安装
   ```bash
   pip3 install requests
