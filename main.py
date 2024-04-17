@@ -44,7 +44,7 @@ class Server:
     def judge(self):
         newItems = [item for item in self.ls if item not in self.pre_ls]
         download_ls=[]
-        if(parameters.subscript_mode==True):
+        if(parameters.subscript_mode==False):
             for item in newItems:
                 if not any(exclude in item['title'] for exclude in parameters.exclude):
                     if any(item['title'].replace("  ", " ").startswith(prefix) for prefix in parameters.start_with):
