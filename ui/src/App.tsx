@@ -18,8 +18,7 @@ function App() {
   const [selected, setSelected]=useState<string>("");
 
   const getLog=async ()=>{
-    // const response=await axios.get("/api");
-    const response=await axios.get("http://localhost:3000/item");
+    const response=await axios.get("/api");
     setList(response.data.reverse());
   }
 
