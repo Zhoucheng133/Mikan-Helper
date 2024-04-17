@@ -15,7 +15,8 @@ function App() {
   }
 
   const [list, setList]=useState<log[]>([]);
-  const [selected, setSelected]=useState<string>("");
+  const [filteredList, setFilteredList]=useState<log[]>([]);
+  const [useFilter, setUseFilter]=useState<string>("");
 
   const getLog=async ()=>{
     const response=await axios.get("/api");
@@ -23,33 +24,16 @@ function App() {
   }
 
   const filter=(val: string)=>{
-    if(selected==val){
-      setSelected("")
+    if(useFilter==val){
+      setUseFilter("")
     }else{
-      setSelected(val);
-    }
-  }
-
-  const filterItem=(val: log)=>{
-    if(selected==""){
-      return true;
-    }else if(selected=="ok"){
-      if(val.type=="ok"){
-        return true;
+      setUseFilter(val);
+      if(val=="err"){
+        setFilteredList(list.filter((item)=>item.type=="err"))
+      }else if(val=="ok"){
+        setFilteredList(list.filter((item)=>item.type=="ok"))
       }else{
-        return false;
-      }
-    }else if(selected=="err"){
-      if(val.type=="err"){
-        return true;
-      }else{
-        return false;
-      }
-    }else{
-      if(val.val.includes("下载")){
-        return true;
-      }else{
-        return false;
+        setFilteredList(list.filter((item)=>item.val.includes("下载")))
       }
     }
   }
@@ -59,21 +43,25 @@ function App() {
       <div className="logPanel">
         <div className="titleBar">
           <div className="title">Mikan Connector Log Panel</div>
-          <div className={selected=="err" ? "bt_selected" : "bt"} onClick={()=>filter("err")} style={{marginLeft: "auto"}}>失败内容</div>
-          <div className={selected=="ok" ? "bt_selected" : "bt"} onClick={()=>filter("ok")}>成功内容</div>
-          <div className={selected=="download" ? "bt_selected" : "bt"} onClick={()=>filter("download")}>下载内容</div>
+          <div className={useFilter=="err" ? "bt_selected" : "bt"} onClick={()=>filter("err")} style={{marginLeft: "auto"}}>失败内容</div>
+          <div className={useFilter=="ok" ? "bt_selected" : "bt"} onClick={()=>filter("ok")}>成功内容</div>
+          <div className={useFilter=="download" ? "bt_selected" : "bt"} onClick={()=>filter("download")}>下载内容</div>
         </div>
         <div className="logList">
           {
-            list.map((item)=>{
-              if(filterItem(item)){
-                return <div className="logItem" key={item.time}>
-                  <div className="logType" style={{color: item.type=="ok"?"lime":"red"}} >{item.type}</div>
-                  <div className="logVal">{item.val}</div>
-                  <div className="logTime">{item.time}</div>
-                </div>
-              }
-            })
+            useFilter=="" ? list.map((item) => (
+              <div className="logItem" key={item.time}>
+                <div className="logType" style={{ color: item.type === "ok" ? "lime" : "red" }}>{item.type}</div>
+                <div className="logVal">{item.val}</div>
+                <div className="logTime">{item.time}</div>
+              </div>
+            )) : filteredList.map((item) => (
+              <div className="logItem" key={item.time}>
+                <div className="logType" style={{ color: item.type === "ok" ? "lime" : "red" }}>{item.type}</div>
+                <div className="logVal">{item.val}</div>
+                <div className="logTime">{item.time}</div>
+              </div>
+            ))
           }
         </div>
       </div>
