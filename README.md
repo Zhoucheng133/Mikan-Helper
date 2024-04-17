@@ -1,8 +1,8 @@
-# Mikan Connector Python
-
-注意，如果你想要通过[Mikan订阅列表](https://mikanime.tv/Home/MyBangumi)来下载更新的番剧，移步到[Mikan Connector](https://github.com/Zhoucheng133/Mikan-Connector)，本项目是用于通过Mikan的[列表](https://mikanime.tv/Home/Classic)中筛选所需要下载的番剧
+# Mikan Helper
 
 如果你希望在一般的系统中使用，你可以尝试使用[Motrix](https://motrix.app/)，如果你在服务器上使用，建议使用Docker安装Aria2
+
+原[Mikan Connector](https://github.com/Zhoucheng133/Mikan-Connector)已**archive**并合并到这个项目中
 
 本项目由Python & React开发
 
