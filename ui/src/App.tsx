@@ -9,6 +9,7 @@ function App() {
   }, [])
 
   interface log{
+    id: number,
     time: string,
     type: string,
     val: string
@@ -43,8 +44,9 @@ function App() {
 
   const getLog=async ()=>{
     const response=await axios.get("/api");
-    // console.log(response.data);
-    setList(response.data.reverse());
+    setList(response.data.reverse().map((item: any, index: any) => {
+      return { ...item, id: index };
+    }));
   }
 
   const filter=(val: string)=>{
@@ -67,7 +69,7 @@ function App() {
         <div className="logList">
           {
             list.filter((item)=>filterItem(item)).map((item)=>{
-              return <div className="logItem" key={item.time}>
+              return <div className="logItem" key={item.id}>
                 <div className="logType" style={{color: item.type=="ok"?"lime":"red"}} >{item.type}</div>
                 <div className="logVal">{item.val}</div>
                 <div className="logTime">{item.time}</div>
