@@ -1,6 +1,10 @@
 <template>
   <div class="form">
     <a-form :model="stores().formData" :label-col="labelCol" :wrapper-col="wrapperCol">
+      <a-form-item label="运行状态">
+        <a-tag :color="stores().running?'green':'orange'">{{ stores().running?"运行中":"等待中" }}</a-tag>
+        <a-switch style="margin-left: 10px;" v-model:checked="stores().running" @change="stores().toggleRun" />
+      </a-form-item>
       <a-form-item label="运行模式">
         <a-radio-group v-model:value="stores().formData.subscribeMode" style="user-select: none;">
           <a-radio-button :value="true">使用订阅模式</a-radio-button>
@@ -15,6 +19,9 @@
       </a-form-item>
       <a-form-item label="规则">
         <a-button style="margin-bottom: 10px;" @click="showRuleModal">添加规则</a-button>
+        <a-tooltip placement="bottomLeft" title="规则为在符合排除A和包含B的情况下，如果开头为C则进行下载" arrow-point-at-center>
+          <a-button :icon="h(QuestionOutlined)" type="text" style="margin-left: 10px;"></a-button>
+        </a-tooltip>
         <a-table :columns="ruleTable().columns" :data-source="stores().formData.rules" :pagination="false">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'type'">
