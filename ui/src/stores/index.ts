@@ -27,5 +27,9 @@ export default defineStore("pinia", ()=>{
     ]
   })
 
-  return {nowPage, formData}
+  const addRule=(val: any)=>{
+    formData.value.rules.push(val);
+  }
+
+  return {nowPage, formData, addRule}
 })

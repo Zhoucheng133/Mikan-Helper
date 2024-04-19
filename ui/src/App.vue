@@ -3,8 +3,9 @@
     <ConfigProvider :locale="zhCN">
       <a-menu v-model:selectedKeys="stores().nowPage" mode="horizontal" :items="nav().items" style="user-select: none;" />
       <div class="content">
-        <Settings v-show="stores().nowPage[0]=='settings'" />
-        <Logs v-show="stores().nowPage[0]=='logs'"/>
+        <div v-show="stores().nowPage[0]=='settings'" ><Settings/></div>
+        <div v-show="stores().nowPage[0]=='logs'"><Logs /></div>
+        
       </div>
     </ConfigProvider>
   </div>
@@ -26,5 +27,6 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 }
 .content{
   margin-top: 30px;
+  margin-bottom: 30px;
 }
 </style>

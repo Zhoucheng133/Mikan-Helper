@@ -14,6 +14,7 @@
         <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode" />
       </a-form-item>
       <a-form-item label="规则">
+        <a-button style="margin-bottom: 10px;" @click="showRuleModal">添加规则</a-button>
         <a-table :columns="ruleTable().columns" :data-source="stores().formData.rules" :pagination="false">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'type'">
@@ -24,13 +25,28 @@
       </a-form-item>
     </a-form>
   </div>
+  <a-modal v-model:open="openRuleModal" centered height="300px" okText="添加" title="添加规则" @ok="addRuleHandler">
+    <a-form :model="addForm" :label-col="{ style: { width: '80px' } }" :wrapper-col=" { style: { width: '300px' } }">
+      <a-form-item label="规则类别">
+        <a-select v-model:value="addForm.type">
+          <a-select-option value="exclude">排除</a-select-option>
+          <a-select-option value="include">包含</a-select-option>
+          <a-select-option value="startWith">以...为开头</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item label="值">
+        <a-input v-model:value="addForm.value"></a-input>
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
 import stores from '../stores';
-import { computed, h, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import { QuestionOutlined } from '@ant-design/icons-vue';
 import ruleTable from '../hooks/ruleTable';
+import { message } from 'ant-design-vue';
 
 const modeTip=computed(()=>{
   return stores().formData.subscribeMode ? "订阅模式需要在Mikan Project上注册并且选择需要番剧订阅" : "列表模式将会从所有的番剧列表中筛选需要下载的内容进行下载"
@@ -40,6 +56,23 @@ const rssLabel=computed(()=>{
 })
 const labelCol = { style: { width: '150px' } };
 const wrapperCol = { style: { width: '800px' } };
+
+let openRuleModal=ref(false);
+const showRuleModal=()=>{
+  openRuleModal.value=true;
+}
+let addForm=ref({
+  type: "exclude",
+  value: "",
+})
+const addRuleHandler=()=>{
+  if(addForm.value.value==""){
+    message.error("没有输入内容！")
+  }else{
+    stores().addRule(addForm.value);
+    openRuleModal.value=false;
+  }
+}
 
 watch(stores().formData, (newVal)=>{
   if(newVal.subscribeMode==false){
