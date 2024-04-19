@@ -17,6 +17,12 @@ export default function(){
       dataIndex: 'value',
       key: 'value',
     },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      key: 'op',
+      width: "80px",
+    },
   ]
 
   return {columns}
