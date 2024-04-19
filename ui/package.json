@@ -11,8 +11,8 @@
   "dependencies": {
     "ant-design-vue": "4.x",
     "axios": "^1.6.8",
+    "nanoid": "^5.0.7",
     "pinia": "^2.1.7",
-    "uuid": "^9.0.1",
     "vue": "^3.4.21"
   },
   "devDependencies": {
