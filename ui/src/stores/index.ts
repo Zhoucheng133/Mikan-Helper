@@ -4,32 +4,18 @@ import { ref } from "vue";
 export default defineStore("pinia", ()=>{
   let nowPage = ref<string[]>(['settings']);
 
+  interface Rule{
+    id: string,
+    type: string,
+    value: string,
+  }
+
+  let running=ref(false);
+
   let formData=ref({
     subscribeMode: true,
     rssLink: "",
-    rules: [
-      // 以下内容仅做测试
-      {
-        id: "123",
-        type: "exclude",
-        value: "CHT"
-      },
-      {
-        id: "456",
-        type: "include",
-        value: "1080P"
-      },
-      {
-        id: "8989",
-        type: "startWith",
-        value: "[ANi]"
-      },
-      {
-        id: "090",
-        type: "include",
-        value: "CHS"
-      }
-    ]
+    rules: [] as Rule[]
   })
 
   const addRule=(val: any)=>{
@@ -38,6 +24,13 @@ export default defineStore("pinia", ()=>{
   const delRule=(id: string)=>{
     formData.value.rules=formData.value.rules.filter(item => item.id != id);
   }
+  const toggleRun=(val: boolean)=>{
+    if(val){
+      // TODO 运行服务
+    }else{
+      // TODO 停止服务
+    }
+  }
 
-  return {nowPage, formData, addRule, delRule}
+  return {nowPage, formData, addRule, delRule, running, toggleRun}
 })
