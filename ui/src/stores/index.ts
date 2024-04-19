@@ -7,8 +7,24 @@ export default defineStore("pinia", ()=>{
   let formData=ref({
     subscribeMode: true,
     rssLink: "",
-    exclude: [],
-    startWith: [],
+    rules: [
+      {
+        "type": "exclude",
+        "value": "CHT"
+      },
+      {
+        "type": "include",
+        "value": "1080P"
+      },
+      {
+        "type": "startWith",
+        "value": "[ANi]"
+      },
+      {
+        "type": "include",
+        "value": "CHS"
+      }
+    ]
   })
 
   return {nowPage, formData}

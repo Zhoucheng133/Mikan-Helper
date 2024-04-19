@@ -14,8 +14,12 @@
         <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode" />
       </a-form-item>
       <a-form-item label="规则">
-        <a-table :columns="ruleTable().columns">
-
+        <a-table :columns="ruleTable().columns" :data-source="stores().formData.rules" :pagination="false">
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'type'">
+              <a-tag :color="record.type=='include'?'green':record.type=='exclude'?'red':'blue'">{{ record.type=='include'?'包含':record.type=='exclude'?'排除':'以...为开头' }}</a-tag>
+            </template>
+          </template>
         </a-table>
       </a-form-item>
     </a-form>
