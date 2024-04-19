@@ -20,6 +20,9 @@
             <template v-if="column.key === 'type'">
               <a-tag :color="record.type=='include'?'green':record.type=='exclude'?'red':'blue'">{{ record.type=='include'?'包含':record.type=='exclude'?'排除':'以...为开头' }}</a-tag>
             </template>
+            <template v-if="column.key === 'op'">
+              <div class="delButton" @click="delRuleHandler(record.id)">删除</div>
+            </template>
           </template>
         </a-table>
       </a-form-item>
@@ -47,6 +50,7 @@ import { computed, h, ref, watch } from 'vue';
 import { QuestionOutlined } from '@ant-design/icons-vue';
 import ruleTable from '../hooks/ruleTable';
 import { message } from 'ant-design-vue';
+import { nanoid } from 'nanoid'
 
 const modeTip=computed(()=>{
   return stores().formData.subscribeMode ? "订阅模式需要在Mikan Project上注册并且选择需要番剧订阅" : "列表模式将会从所有的番剧列表中筛选需要下载的内容进行下载"
@@ -62,6 +66,7 @@ const showRuleModal=()=>{
   openRuleModal.value=true;
 }
 let addForm=ref({
+  id: "",
   type: "exclude",
   value: "",
 })
@@ -69,9 +74,14 @@ const addRuleHandler=()=>{
   if(addForm.value.value==""){
     message.error("没有输入内容！")
   }else{
-    stores().addRule(addForm.value);
+    const newData = { ...addForm.value, id: nanoid() };
+    stores().addRule(newData);
     openRuleModal.value=false;
+    addForm.value.id="";
   }
+}
+const delRuleHandler=(id: string)=>{
+  stores().delRule(id);
 }
 
 watch(stores().formData, (newVal)=>{
@@ -88,5 +98,13 @@ watch(stores().formData, (newVal)=>{
   display: grid;
   justify-content: center;
   user-select: none;
+}
+.delButton:hover{
+  color: darkred;
+}
+.delButton{
+  cursor: pointer;
+  color: red;
+  transition: color linear .2s;
 }
 </style>
