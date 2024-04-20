@@ -39,7 +39,8 @@ export default defineStore("pinia", ()=>{
         message.error("RSS地址不能为空");
         running.value=false;
       }else if(ariaData.value.ariaLink==""){
-        message.error("aria地址不能为空")
+        message.error("Aria2 地址不能为空");
+        running.value=false;
       }
       // TODO 运行服务
     }else{
