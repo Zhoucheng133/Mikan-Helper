@@ -12,6 +12,11 @@ export default defineStore("pinia", ()=>{
   }
 
   let running=ref(false);
+  let log=ref([]);
+
+  const setLog=(val: any)=>{
+    log.value=val;
+  }
 
   let formData=ref({
     subscribeMode: true,
@@ -50,6 +55,9 @@ export default defineStore("pinia", ()=>{
   const setFormData=(val: any)=>{
     formData.value=val;
   }
+  const setRunning=(val: boolean)=>{
+    running.value=val;
+  }
 
   watch(formData, (newVal)=>{
     if(newVal.subscribeMode==false){
@@ -62,5 +70,5 @@ export default defineStore("pinia", ()=>{
     localStorage.setItem("aria", JSON.stringify(ariaData.value));
   }, {deep: true})
 
-  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData}
+  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, setRunning, log, setLog}
 })

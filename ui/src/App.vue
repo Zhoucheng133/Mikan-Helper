@@ -17,6 +17,12 @@ import Settings from './components/Settings.vue';
 import Logs from './components/Logs.vue';
 import { ConfigProvider } from 'ant-design-vue';
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import { onMounted } from 'vue';
+import requets from './stores/requets';
+onMounted(()=>{
+  requets().getStatus();
+  requets().getLog();
+})
 </script>
 
 <style scoped>
