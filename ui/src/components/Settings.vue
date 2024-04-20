@@ -106,8 +106,6 @@ const getSettings=()=>{
 watch(stores().formData, (newVal)=>{
   if(newVal.subscribeMode==false){
     stores().formData.rssLink="https://mikanime.tv/RSS/Classic";
-  }else{
-    stores().formData.rssLink="";
   }
   localStorage.setItem("settings", JSON.stringify(stores().formData))
 }, {deep: true})
