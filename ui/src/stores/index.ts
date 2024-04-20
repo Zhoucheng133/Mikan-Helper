@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export default defineStore("pinia", ()=>{
-  let nowPage = ref<string[]>(['settings']);
+  let nowPage = ref<string[]>(['aria']);
 
   interface Rule{
     id: string,
@@ -15,8 +15,14 @@ export default defineStore("pinia", ()=>{
   let formData=ref({
     subscribeMode: true,
     rssLink: "",
-    rules: [] as Rule[]
-  })
+    rules: [] as Rule[],
+    updateFreq: 15,
+  });
+
+  let ariaData=ref({
+    ariaLink: "",
+    ariaSecret: "",
+  });
 
   const addRule=(val: any)=>{
     formData.value.rules.push(val);
@@ -34,6 +40,9 @@ export default defineStore("pinia", ()=>{
   const setFormData=(val: any)=>{
     formData.value=val;
   }
+  const setAriaData=(val: any)=>{
+    ariaData.value=val;
+  }
 
-  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData}
+  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, ariaData, setAriaData}
 })
