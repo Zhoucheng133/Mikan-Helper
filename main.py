@@ -1,18 +1,22 @@
 from flask import Flask, jsonify, request, send_file, send_from_directory
 import threading
 import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 val="Hello Python"
 
-aria_link=""
-aria_secret=""
-subscript_mode=False
-subscript_url=""
-start_with=[]
-exclude=[]
-update_freq=""
+formData={
+    'subscribeMode': True,
+    'rssLink': "",
+    'rules': [],
+    'updateFreq': 15,
+    'airaLink': "",
+    'airaSecret': "",
+}
+log=[]
 
 class ServerThread(threading.Thread):
     def __init__(self):
@@ -36,6 +40,20 @@ def home():
 @app.route('/assets/<path:path>')
 def assets(path):
     return send_file("ui/dist/assets/"+path)
+
+@app.route('/api/log')
+def getLog():
+    global log
+    return jsonify({'status': 'ok', 'log': log})
+
+@app.route('/api/status')
+def getStatus():
+    global server_thread
+    global formData
+    if server_thread is not None and server_thread.is_alive():
+        return jsonify({'status': 'ok', 'formData': formData})
+    else:
+        return jsonify({'status': 'false', 'formData': formData})
 
 @app.route('/api/run', methods=['POST'])
 def startServer():
