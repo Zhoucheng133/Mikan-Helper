@@ -6,10 +6,10 @@
         <a-switch style="margin-left: 10px;" v-model:checked="stores().running" @change="stores().toggleRun" />
       </a-form-item>
       <a-form-item label="加载设置">
-        <a-button type="text" style="color: #1677ff;" @click="getSettings">从浏览器中加载系统设置</a-button>
+        <a-button type="link" @click="getSettings" :disabled="stores().running">从浏览器中加载系统设置</a-button>
       </a-form-item>
       <a-form-item label="运行模式">
-        <a-radio-group v-model:value="stores().formData.subscribeMode" style="user-select: none;">
+        <a-radio-group v-model:value="stores().formData.subscribeMode" style="user-select: none;" :disabled="stores().running">
           <a-radio-button :value="true">使用订阅模式</a-radio-button>
           <a-radio-button :value="false">使用列表模式</a-radio-button>
         </a-radio-group>
@@ -18,17 +18,16 @@
         </a-tooltip>
       </a-form-item>
       <a-form-item :label="rssLabel">
-        <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode" />
+        <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode || stores().running" />
       </a-form-item>
       <a-form-item label="更新频率">
-        
         <div class="freq">
-          <a-input-number v-model:value="stores().formData.updateFreq" style="margin-right: 10px;" />
+          <a-input-number v-model:value="stores().formData.updateFreq" style="margin-right: 10px;" :disabled="stores().running" />
           分钟
         </div>
       </a-form-item>
       <a-form-item label="规则">
-        <a-button style="margin-bottom: 10px;" @click="showRuleModal">添加规则</a-button>
+        <a-button style="margin-bottom: 10px;" @click="showRuleModal" :disabled="stores().running">添加规则</a-button>
         <a-tooltip placement="bottomLeft" title="规则为在符合排除A和包含B的情况下，如果开头为C则进行下载" arrow-point-at-center>
           <a-button :icon="h(QuestionOutlined)" type="text" style="margin-left: 10px;"></a-button>
         </a-tooltip>
@@ -63,7 +62,7 @@
 
 <script setup lang="ts">
 import stores from '../stores';
-import { computed, h, ref, watch } from 'vue';
+import { computed, h, ref } from 'vue';
 import { QuestionOutlined } from '@ant-design/icons-vue';
 import ruleTable from '../hooks/ruleTable';
 import { message } from 'ant-design-vue';
@@ -98,7 +97,9 @@ const addRuleHandler=()=>{
   }
 }
 const delRuleHandler=(id: string)=>{
-  stores().delRule(id);
+  if(!stores().running){
+    stores().delRule(id);
+  }
 }
 const getSettings=()=>{
   const settings=localStorage.getItem("settings");
@@ -110,12 +111,6 @@ const getSettings=()=>{
   }
 }
 
-watch(stores().formData, (newVal)=>{
-  if(newVal.subscribeMode==false){
-    stores().formData.rssLink="https://mikanime.tv/RSS/Classic";
-  }
-  localStorage.setItem("settings", JSON.stringify(stores().formData))
-}, {deep: true})
 </script>
 
 <style scoped>

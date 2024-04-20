@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export default defineStore("pinia", ()=>{
-  let nowPage = ref<string[]>(['aria']);
+  let nowPage = ref<string[]>(['settings']);
 
   interface Rule{
     id: string,
@@ -43,6 +43,17 @@ export default defineStore("pinia", ()=>{
   const setAriaData=(val: any)=>{
     ariaData.value=val;
   }
+
+  watch(formData, (newVal)=>{
+    if(newVal.subscribeMode==false){
+      formData.value.rssLink="https://mikanime.tv/RSS/Classic";
+    }
+    localStorage.setItem("settings", JSON.stringify(formData.value))
+  }, {deep: true})
+
+  watch(ariaData, ()=>{
+    localStorage.setItem("aria", JSON.stringify(ariaData.value));
+  }, {deep: true})
 
   return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, ariaData, setAriaData}
 })
