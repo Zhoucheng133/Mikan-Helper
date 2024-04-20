@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request, send_file, send_from_directory
 import threading
 import time
 from flask_cors import CORS
+import Test
+import Test.logTest
 
 app = Flask(__name__)
 CORS(app)
@@ -16,7 +18,10 @@ formData={
     'airaLink': "",
     'airaSecret': "",
 }
-log=[]
+log=Test.logTest.logTest
+# log=[
+    
+# ]
 
 class ServerThread(threading.Thread):
     def __init__(self):
