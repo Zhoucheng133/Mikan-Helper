@@ -20,6 +20,13 @@
       <a-form-item :label="rssLabel">
         <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode" />
       </a-form-item>
+      <a-form-item label="更新频率">
+        
+        <div class="freq">
+          <a-input-number v-model:value="stores().formData.updateFreq" style="margin-right: 10px;" />
+          分钟
+        </div>
+      </a-form-item>
       <a-form-item label="规则">
         <a-button style="margin-bottom: 10px;" @click="showRuleModal">添加规则</a-button>
         <a-tooltip placement="bottomLeft" title="规则为在符合排除A和包含B的情况下，如果开头为C则进行下载" arrow-point-at-center>
@@ -112,6 +119,10 @@ watch(stores().formData, (newVal)=>{
 </script>
 
 <style scoped>
+.freq{
+  display: flex;
+  align-items: center;
+}
 .form{
   display: grid;
   justify-content: center;
