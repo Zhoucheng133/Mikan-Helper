@@ -5,6 +5,9 @@
         <a-tag :color="stores().running?'green':'orange'">{{ stores().running?"运行中":"等待中" }}</a-tag>
         <a-switch style="margin-left: 10px;" v-model:checked="stores().running" @change="stores().toggleRun" />
       </a-form-item>
+      <a-form-item label="加载设置">
+        <a-button type="text" style="color: #1677ff;" @click="getSettings">从浏览器中加载系统设置</a-button>
+      </a-form-item>
       <a-form-item label="运行模式">
         <a-radio-group v-model:value="stores().formData.subscribeMode" style="user-select: none;">
           <a-radio-button :value="true">使用订阅模式</a-radio-button>
@@ -90,6 +93,15 @@ const addRuleHandler=()=>{
 const delRuleHandler=(id: string)=>{
   stores().delRule(id);
 }
+const getSettings=()=>{
+  const settings=localStorage.getItem("settings");
+  if(settings){
+    const jsonSettings=JSON.parse(settings);
+    stores().setFormData(jsonSettings);
+  }else{
+    message.error("浏览器中没有记录的设置选项")
+  }
+}
 
 watch(stores().formData, (newVal)=>{
   if(newVal.subscribeMode==false){
@@ -97,6 +109,7 @@ watch(stores().formData, (newVal)=>{
   }else{
     stores().formData.rssLink="";
   }
+  localStorage.setItem("settings", JSON.stringify(stores().formData))
 }, {deep: true})
 </script>
 

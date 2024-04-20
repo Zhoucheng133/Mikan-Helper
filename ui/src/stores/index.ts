@@ -31,6 +31,9 @@ export default defineStore("pinia", ()=>{
       // TODO 停止服务
     }
   }
+  const setFormData=(val: any)=>{
+    formData.value=val;
+  }
 
-  return {nowPage, formData, addRule, delRule, running, toggleRun}
+  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData}
 })
