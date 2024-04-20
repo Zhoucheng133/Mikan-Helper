@@ -16,9 +16,6 @@ export default defineStore('requests', ()=>{
       stores().setFormData(response.data.formData);
     }
   }
-  const getSettings=()=>{
-
-  }
   const getLog=async ()=>{
     const response=await axios.get(baseURL+"/api/log");
     if(response.data.status=="ok"){
@@ -32,5 +29,5 @@ export default defineStore('requests', ()=>{
 
   }
 
-  return {getStatus, getSettings, getLog, runServer, stopServer}
+  return {getStatus, getLog, runServer, stopServer}
 })

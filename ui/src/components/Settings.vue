@@ -27,10 +27,10 @@
         </div>
       </a-form-item>
       <a-form-item label="Aria2 地址">
-        <a-input v-model:value="stores().formData.airaLink" :disabled="stores().running" />
+        <a-input v-model:value="stores().formData.ariaLink" :disabled="stores().running" />
       </a-form-item>
       <a-form-item label="Aria2 密钥">
-        <a-input-password v-model:value="stores().formData.airaSecret" placeholder="没有则留空" :disabled="stores().running" />
+        <a-input-password v-model:value="stores().formData.ariaSecret" placeholder="没有则留空" :disabled="stores().running" />
       </a-form-item>
       <a-form-item label="规则">
         <a-button style="margin-bottom: 10px;" @click="showRuleModal" :disabled="stores().running">添加规则</a-button>
