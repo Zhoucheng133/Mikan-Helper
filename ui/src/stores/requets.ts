@@ -23,8 +23,8 @@ export default defineStore('requests', ()=>{
       stores().setLog(response.data.log.reverse());
     }
   }
-  const runServer=()=>{
-
+  const runServer=async ()=>{
+    const response=await axios.post(baseURL+"/api/run");
   }
   const stopServer=()=>{
 

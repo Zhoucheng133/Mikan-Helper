@@ -1,6 +1,7 @@
 import { message } from "ant-design-vue";
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
+import requets from "./requets";
 
 export default defineStore("pinia", ()=>{
   interface Rule{
@@ -45,10 +46,11 @@ export default defineStore("pinia", ()=>{
       }else if(formData.value.ariaLink==""){
         message.error("Aria2 地址不能为空");
         running.value=false;
+      }else{
+        requets().runServer();
       }
-      // TODO 运行服务
     }else{
-      // TODO 停止服务
+      requets().stopServer();
     }
   }
 
