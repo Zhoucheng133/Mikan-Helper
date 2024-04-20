@@ -5,10 +5,10 @@
         <a-button @click="getAria" type="link" :disabled="stores().running">从浏览器中加载Aria配置</a-button>
       </a-form-item>
       <a-form-item label="Aria2 地址">
-        <a-input v-model:value="stores().ariaData.ariaLink" />
+        <a-input v-model:value="stores().ariaData.ariaLink" :disabled="stores().running" />
       </a-form-item>
       <a-form-item label="Aria2 密钥">
-        <a-input v-model:value="stores().ariaData.ariaSecret" placeholder="没有则留空" />
+        <a-input v-model:value="stores().ariaData.ariaSecret" placeholder="没有则留空" :disabled="stores().running" />
       </a-form-item>
     </a-form>
   </div>
