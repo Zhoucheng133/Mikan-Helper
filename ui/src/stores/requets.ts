@@ -19,7 +19,8 @@ export default defineStore('requests', ()=>{
   const getLog=async ()=>{
     const response=await axios.get(baseURL+"/api/log");
     if(response.data.status=="ok"){
-      stores().setLog(response.data.log);
+      // console.log(response.data);
+      stores().setLog(response.data.log.reverse());
     }
   }
   const runServer=()=>{
