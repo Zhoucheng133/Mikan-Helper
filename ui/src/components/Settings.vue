@@ -26,6 +26,12 @@
           分钟
         </div>
       </a-form-item>
+      <a-form-item label="Aria2 地址">
+        <a-input v-model:value="stores().formData.airaLink" :disabled="stores().running" />
+      </a-form-item>
+      <a-form-item label="Aria2 密钥">
+        <a-input-password v-model:value="stores().formData.airaSecret" placeholder="没有则留空" :disabled="stores().running" />
+      </a-form-item>
       <a-form-item label="规则">
         <a-button style="margin-bottom: 10px;" @click="showRuleModal" :disabled="stores().running">添加规则</a-button>
         <a-tooltip placement="bottomLeft" title="规则为在符合排除A和包含B的情况下，如果开头为C则进行下载" arrow-point-at-center>
