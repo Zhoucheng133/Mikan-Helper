@@ -9,6 +9,11 @@ export default defineStore("pinia", ()=>{
     type: string,
     value: string,
   }
+  interface Bangumi{
+    id: string,
+    ass: string,
+    title: string,
+  }
   let nowPage = ref<string[]>(['settings']);
   let running=ref(false);
   let log=ref([]);
@@ -19,8 +24,15 @@ export default defineStore("pinia", ()=>{
     updateFreq: 15,
     ariaLink: "",
     ariaSecret: "",
+    bangumi: [] as Bangumi[]
   });
-  
+
+  const addBangumi=(val: any)=>{
+    formData.value.bangumi.push(val);
+  }
+  const delBangumi=(id: string)=>{
+    formData.value.bangumi=formData.value.bangumi.filter(item => item.id != id);
+  }
 
   const setLog=(val: any)=>{
     log.value=val;
@@ -54,12 +66,15 @@ export default defineStore("pinia", ()=>{
     }
   }
 
+  const saveSettings=()=>{
+    localStorage.setItem("settings", JSON.stringify(formData.value))
+  }
+
   watch(formData, (newVal)=>{
     if(newVal.subscribeMode==false){
       formData.value.rssLink="https://mikanime.tv/RSS/Classic";
     }
-    localStorage.setItem("settings", JSON.stringify(formData.value))
   }, {deep: true})
 
-  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, setRunning, log, setLog}
+  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, setRunning, log, setLog, addBangumi, delBangumi, saveSettings}
 })

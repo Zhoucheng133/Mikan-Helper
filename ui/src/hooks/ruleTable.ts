@@ -8,7 +8,6 @@ export default function(){
       filters: [
         { text: '排除', value: 'exclude' },
         { text: '包含', value: 'include' },
-        { text: '以...为开头', value: 'startWith' }
       ],
       onFilter: (value: string, record: any) => record.type==value,
     },
