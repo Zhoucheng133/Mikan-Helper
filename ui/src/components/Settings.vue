@@ -33,7 +33,7 @@
       <a-form-item label="Aria2 密钥">
         <a-input-password v-model:value="stores().formData.ariaSecret" placeholder="没有则留空" :disabled="stores().running" />
       </a-form-item>
-      <a-form-item label="手动添加">
+      <a-form-item label="手动添加" v-show="!stores().formData.subscribeMode">
         <a-button style="margin-bottom: 10px;" @click="showBangumiModal" :disabled="stores().running">添加番剧</a-button>
         <a-tooltip placement="bottomLeft" title="仅列表模式可用" arrow-point-at-center>
           <a-button :icon="h(QuestionOutlined)" type="text" style="margin-left: 10px;"></a-button>
@@ -73,7 +73,7 @@
         </a-select>
       </a-form-item>
       <a-form-item label="值">
-        <a-input v-model:value="addForm.value"></a-input>
+        <a-input v-model:value="addForm.value" @pressEnter="addRuleHandler"></a-input>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -83,7 +83,7 @@
         <a-input v-model:value="bangumiForm.ass"></a-input>
       </a-form-item>
       <a-form-item label="标题">
-        <a-input v-model:value="bangumiForm.title"></a-input>
+        <a-input v-model:value="bangumiForm.title" @pressEnter="addBangumiHandler"></a-input>
       </a-form-item>
     </a-form>
   </a-modal>
