@@ -13,6 +13,7 @@ val="Hello Python"
 formData={
     'subscribeMode': True,
     'rssLink': "",
+    'bangumi': [],
     'rules': [],
     'updateFreq': 15,
     'airaLink': "",
@@ -63,6 +64,8 @@ def getStatus():
 @app.route('/api/run', methods=['POST'])
 def startServer():
     global server_thread
+    global formData
+    formData = request.json
     if server_thread is None or not server_thread.is_alive():
         server_thread = ServerThread()
         server_thread.start()
