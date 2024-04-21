@@ -1,16 +1,36 @@
-import parameters
-import requests
+from flask import Flask, jsonify, request, send_file, send_from_directory
+import threading
+import time
+# from flask_cors import CORS
+import Test.logTest
 import feedparser
-import asyncio
-from flask import Flask, send_from_directory, send_file
 import datetime
-from threading import Thread
+import requests
 
-log=[]
+app = Flask(__name__)
+# CORS(app)
 
-class Server:
+formData={
+    'subscribeMode': True,
+    'rssLink': "",
+    'bangumi': [],
+    'rules': [],
+    'updateFreq': 15,
+    'ariaLink': "",
+    'ariaSecret': "",
+}
+log=[
+    
+]
+
+class ServerThread(threading.Thread):
+
     pre_ls=[]
     ls=[]
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self._stop_event = threading.Event()
 
     def downloadHandler(self, url):
         data=f'''
@@ -19,7 +39,7 @@ class Server:
     "method": "aria2.addUri",
     "id": 1,
     "params": [
-        "token:{parameters.aria_secret}",
+        "token:{formData['ariaSecret']}",
         ["{url}"],
         {{
             "split": "5",
@@ -29,55 +49,64 @@ class Server:
     ]
 }}
         '''
-        requests.post(parameters.aria_link, data)
+        requests.post(formData['ariaLink'], data)
 
-    def setLog(self, logtype, val):
+    def run(self):
+        while not self._stop_event.is_set():
+            self.mainLoop()
+            time.sleep(formData['updateFreq']*60)
+
+    def addLog(self, logtype, val):
         current_time=datetime.datetime.now()
         if len(log)>=50:
             log.pop(0)
         log.append({
             "type": logtype,
             "time": current_time.strftime("%Y-%m-%d %H:%M:%S"),
-            "val": val
+            "value": val
         })
-
-    def judge(self):
-        newItems = [item for item in self.ls if item not in self.pre_ls]
-        download_ls=[]
-        if(parameters.subscript_mode==False):
-            for item in newItems:
-                if not any(exclude in item['title'] for exclude in parameters.exclude):
-                    if any(item['title'].replace("  ", " ").startswith(prefix) for prefix in parameters.start_with):
-                        download_ls.append(item)
-        else:
-            for item in newItems:
-                if not any(exclude in item['title'] for exclude in parameters.exclude):
-                    download_ls.append(item)
-        
-
-        for item in download_ls:
-            print("下载: "+item["title"])
-            self.setLog("ok", "下载: "+item["title"])
-            self.downloadHandler(item["url"])
-    
-    def rsslink(self):
-        if parameters.subscript_mode==True:
-            return parameters.subscript_url
-        else:
-            return "https://mikanime.tv/RSS/Classic"
 
     def rssRequest(self):
         try:
-            rss_data=feedparser.parse(requests.get(self.rsslink()).text)
+            rss_data=feedparser.parse(requests.get(formData['rssLink']).text)
             return rss_data
         except requests.RequestException as e:
-            self.setLog("err", "请求出错")
-            print("请求出现错误")
+            self.addLog("err", "请求出错")
             return ""
+        
+    def judge(self):
+        newItems = [item for item in self.ls if item not in self.pre_ls]
+        download_ls=[]
+        exclude=[]
+        include=[]
+        for item in formData['rules']:
+            if item['type']=='include':
+                include.append(item['value'])
+            else:
+                exclude.append(item['value'])
 
-    def loop(self):
+        # 记得把False改为True
+        if formData["subscribeMode"]==True:
+            for item in newItems:
+                if all(exclude_word not in item['title'] for exclude_word in exclude) and all(include_word in item['title'] for include_word in include):
+                    download_ls.append(item)
+        else:
+            for item in newItems:
+                if all(exclude_word not in item['title'] for exclude_word in exclude) and all(include_word in item['title'] for include_word in include):
+                    for list_item in formData['bangumi']:
+                        if list_item["ass"] in item['title'] and list_item["title"] in item['title']:
+                            download_ls.append(item)
+                            break
+
+        for item in download_ls:
+            print("下载: "+item["title"])
+            self.addLog("download", "下载: "+item["title"])
+            self.downloadHandler(item["url"])
+
+    def mainLoop(self):
         rss_data=self.rssRequest()
         if len(rss_data)==0:
+            print("请求失败!")
             return
         rss_list=[]
         for item in rss_data.entries:
@@ -87,7 +116,7 @@ class Server:
                 "length": item['links'][2]['length'],
             })
         print("请求rss服务器")
-        self.setLog("ok", "请求rss服务器")
+        self.addLog("ok", "请求rss服务器")
         if len(self.pre_ls)==0 and len(self.ls)==0:
             self.ls=rss_list
         else:
@@ -95,16 +124,10 @@ class Server:
             self.ls=rss_list
             self.judge()
 
-    async def mainLoop(self):
-        while True:
-            self.loop()
-            await asyncio.sleep(parameters.update_freq*60)
+    def stop(self):
+        self._stop_event.set()
 
-app = Flask(__name__)
-
-@app.route('/api')
-def api():
-    return log
+server_thread = None
 
 @app.route('/')
 def home():
@@ -114,11 +137,42 @@ def home():
 def assets(path):
     return send_file("ui/dist/assets/"+path)
 
+@app.route('/api/log')
+def getLog():
+    global log
+    return jsonify({'status': 'ok', 'log': log})
 
-if __name__ == "__main__":
+@app.route('/api/status')
+def getStatus():
+    global server_thread
+    global formData
+    if server_thread is not None and server_thread.is_alive():
+        return jsonify({'status': 'ok', 'formData': formData}), 200
+    else:
+        return jsonify({'status': 'false', 'formData': formData}), 200
 
-    t1 = Thread(target=asyncio.run, args=(Server().mainLoop(),))
-    t2 = Thread(target=app.run, args=("0.0.0.0", 8811))
+@app.route('/api/run', methods=['POST'])
+def startServer():
+    global server_thread
+    global formData
+    formData = request.json
+    if server_thread is None or not server_thread.is_alive():
+        server_thread = ServerThread()
+        server_thread.start()
+        return jsonify({'status':'ok', 'message': 'loop started'}), 200
+    else:
+        return jsonify({'status': 'err', 'message': 'loop running'}), 400
 
-    t1.start()
-    t2.start()
+@app.route('/api/stop', methods=['POST'])
+def StopServer():
+    global server_thread
+    if server_thread is not None and server_thread.is_alive():
+        server_thread.stop()
+        server_thread.join()
+        return jsonify({'status':'ok', 'message': 'loop stoped'}), 200
+    else:
+        return jsonify({'status':'err', 'message': 'no loop'}), 400
+
+
+if __name__ == '__main__':
+    app.run("0.0.0.0", 8811)
