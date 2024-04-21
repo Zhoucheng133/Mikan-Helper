@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import stores from ".";
 
 export default defineStore('requests', ()=>{
-  const baseURL="http://localhost:8811";
+  const baseURL="";
   const getStatus=async ()=>{
     const response=await axios.get(baseURL+"/api/status");
     if(response.data.status=="ok"){
