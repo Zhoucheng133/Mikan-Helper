@@ -57,9 +57,9 @@ def getStatus():
     global server_thread
     global formData
     if server_thread is not None and server_thread.is_alive():
-        return jsonify({'status': 'ok', 'formData': formData})
+        return jsonify({'status': 'ok', 'formData': formData}), 200
     else:
-        return jsonify({'status': 'false', 'formData': formData})
+        return jsonify({'status': 'false', 'formData': formData}), 200
 
 @app.route('/api/run', methods=['POST'])
 def startServer():
