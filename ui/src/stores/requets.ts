@@ -24,10 +24,17 @@ export default defineStore('requests', ()=>{
     }
   }
   const runServer=async ()=>{
-    const response=await axios.post(baseURL+"/api/run");
+    const data=stores().formData;
+    const response=await axios.post(baseURL+"/api/run", data);
+    if(response.data.status=="ok"){
+      stores().setRunning(true);
+    }
   }
-  const stopServer=()=>{
-
+  const stopServer=async ()=>{
+    const response=await axios.post(baseURL+"/api/stop");
+    if(response.data.status=="ok"){
+      stores().setRunning(false);
+    }
   }
 
   return {getStatus, getLog, runServer, stopServer}
