@@ -1,14 +1,14 @@
 from flask import Flask, jsonify, request, send_file, send_from_directory
 import threading
 import time
-from flask_cors import CORS
+# from flask_cors import CORS
 import Test.logTest
 import feedparser
 import datetime
 import requests
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 formData={
     'subscribeMode': True,
