@@ -25,10 +25,11 @@ class ServerThread(threading.Thread):
 
     pre_ls=[]
     ls=[]
-
+    
     def __init__(self):
         threading.Thread.__init__(self)
         self._stop_event = threading.Event()
+        self._timer = None
 
     def downloadHandler(self, url):
         data=f'''
@@ -52,7 +53,10 @@ class ServerThread(threading.Thread):
     def run(self):
         while not self._stop_event.is_set():
             self.mainLoop()
-            time.sleep(formData['updateFreq']*60)
+            # time.sleep(formData['updateFreq']*60)
+            self._timer = threading.Timer(formData['updateFreq']*60, self._stop_event.set)
+            self._timer.start()
+            self._timer.join()
 
     def addLog(self, logtype, val):
         current_time=datetime.datetime.now()
@@ -124,6 +128,8 @@ class ServerThread(threading.Thread):
 
     def stop(self):
         self._stop_event.set()
+        if self._timer:
+            self._timer.cancel()
 
 server_thread = None
 
