@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, request, send_file, send_from_directory
 import threading
 import time
-# from flask_cors import CORS
-# import Test.logTest
 import feedparser
 import datetime
 import requests
@@ -164,7 +162,7 @@ def startServer():
         return jsonify({'status': 'err', 'message': 'loop running'}), 400
 
 @app.route('/api/stop', methods=['POST'])
-def StopServer():
+def stopServer():
     global server_thread
     if server_thread is not None and server_thread.is_alive():
         server_thread.stop()
