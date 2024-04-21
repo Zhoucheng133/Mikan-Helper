@@ -68,6 +68,7 @@ export default defineStore("pinia", ()=>{
 
   const saveSettings=()=>{
     localStorage.setItem("settings", JSON.stringify(formData.value))
+    message.success("保存设置成功!")
   }
 
   watch(formData, (newVal)=>{
