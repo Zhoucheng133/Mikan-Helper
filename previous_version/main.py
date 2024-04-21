@@ -1,4 +1,4 @@
-import parameters
+import previous_version.parameters as parameters
 import requests
 import feedparser
 import asyncio
