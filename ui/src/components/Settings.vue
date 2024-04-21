@@ -43,9 +43,9 @@
             <template v-if="column.key === 'ass'">
               <a-tag>{{record.ass}}</a-tag>
             </template>
-            <!-- <template v-if="column.key === 'op'">
-              <div class="delButton" @click="del(record.id)">删除</div>
-            </template> -->
+            <template v-if="column.key === 'op'">
+              <div class="delButton" @click="delBangumi(record.id)">删除</div>
+            </template>
           </template>
         </a-table>
       </a-form-item>
@@ -100,7 +100,7 @@ import bangumiModal from '../hooks/bangumiModal';
 import bangumiTable from '../hooks/bangumiTable';
 
 const {addForm, openRuleModal, showRuleModal, addRuleHandler, delRuleHandler}=ruleModal();
-const {openBangumiModal, showBangumiModal, bangumiForm, addBangumiHandler}=bangumiModal();
+const {openBangumiModal, showBangumiModal, bangumiForm, addBangumiHandler, delBangumi}=bangumiModal();
 
 const modeTip=computed(()=>{
   return stores().formData.subscribeMode ? "订阅模式需要在Mikan Project上注册并且选择需要番剧订阅" : "列表模式将会从所有的番剧列表中筛选需要下载的内容进行下载"

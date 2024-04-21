@@ -29,5 +29,11 @@ export default function(){
     }
   }
 
-  return {openBangumiModal, showBangumiModal, bangumiForm, addBangumiHandler};
+  const delBangumi=(id: string)=>{
+    if(!stores().running){
+      stores().delBangumi(id);
+    }
+  }
+
+  return {openBangumiModal, showBangumiModal, bangumiForm, addBangumiHandler, delBangumi};
 }
