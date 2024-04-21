@@ -53,8 +53,7 @@ class ServerThread(threading.Thread):
     def run(self):
         while not self._stop_event.is_set():
             self.mainLoop()
-            # time.sleep(formData['updateFreq']*60)
-            self._timer = threading.Timer(formData['updateFreq']*60, self._stop_event.set)
+            self._timer = threading.Timer(formData['updateFreq'], lambda: print("Timer End"))
             self._timer.start()
             self._timer.join()
 
