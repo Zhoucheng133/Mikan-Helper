@@ -13,8 +13,6 @@ export default defineStore('requests', ()=>{
     }
     if(response.data.formData.rsslink!=""){
       stores().setFormData(response.data.formData);
-      console.log("?");
-      
     }
   }
   const getLog=async ()=>{
