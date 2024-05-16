@@ -66,16 +66,11 @@ export default defineStore("pinia", ()=>{
     }
   }
 
-  const saveSettings=()=>{
-    localStorage.setItem("settings", JSON.stringify(formData.value))
-    message.success("保存设置成功!")
-  }
-
   watch(formData, (newVal)=>{
     if(newVal.subscribemode==false){
       formData.value.rsslink="https://mikanime.tv/RSS/Classic";
     }
   }, {deep: true})
 
-  return {nowPage, formData, addRule, delRule, running, toggleRun, setFormData, setRunning, log, setLog, addBangumi, delBangumi, saveSettings}
+  return { nowPage, formData, addRule, delRule, running, toggleRun, setFormData, setRunning, log, setLog, addBangumi, delBangumi }
 })

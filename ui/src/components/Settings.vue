@@ -5,10 +5,6 @@
         <a-tag :color="stores().running?'green':'orange'">{{ stores().running?"运行中":"等待中" }}</a-tag>
         <a-switch style="margin-left: 10px;" v-model:checked="stores().running" @change="stores().toggleRun" />
       </a-form-item>
-      <a-form-item label="加载设置">
-        <a-button type="link" @click="getSettings" :disabled="stores().running">从浏览器中加载系统设置</a-button>
-        <a-button type="link" @click="stores().saveSettings">保存当前设置到浏览器</a-button>
-      </a-form-item>
       <a-form-item label="运行模式">
         <a-radio-group v-model:value="stores().formData.subscribemode" style="user-select: none;" :disabled="stores().running">
           <a-radio-button :value="true">使用订阅模式</a-radio-button>
@@ -94,7 +90,6 @@ import stores from '../stores';
 import { computed, h } from 'vue';
 import { QuestionOutlined } from '@ant-design/icons-vue';
 import ruleTable from '../hooks/ruleTable';
-import { message } from 'ant-design-vue';
 import ruleModal from '../hooks/ruleModal';
 import bangumiModal from '../hooks/bangumiModal';
 import bangumiTable from '../hooks/bangumiTable';
@@ -110,16 +105,6 @@ const rssLabel=computed(()=>{
 })
 const labelCol = { style: { width: '150px' } };
 const wrapperCol = { style: { width: '800px' } };
-
-const getSettings=()=>{
-  const settings=localStorage.getItem("settings");
-  if(settings){
-    const jsonSettings=JSON.parse(settings);
-    stores().setFormData(jsonSettings);
-  }else{
-    message.error("浏览器中没有记录的设置选项")
-  }
-}
 
 </script>
 
