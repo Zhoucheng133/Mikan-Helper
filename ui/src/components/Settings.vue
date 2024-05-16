@@ -10,7 +10,7 @@
         <a-button type="link" @click="stores().saveSettings">保存当前设置到浏览器</a-button>
       </a-form-item>
       <a-form-item label="运行模式">
-        <a-radio-group v-model:value="stores().formData.subscribeMode" style="user-select: none;" :disabled="stores().running">
+        <a-radio-group v-model:value="stores().formData.subscribemode" style="user-select: none;" :disabled="stores().running">
           <a-radio-button :value="true">使用订阅模式</a-radio-button>
           <a-radio-button :value="false">使用列表模式</a-radio-button>
         </a-radio-group>
@@ -19,21 +19,21 @@
         </a-tooltip>
       </a-form-item>
       <a-form-item :label="rssLabel">
-        <a-input v-model:value="stores().formData.rssLink" :disabled="!stores().formData.subscribeMode || stores().running" />
+        <a-input v-model:value="stores().formData.rsslink" :disabled="!stores().formData.subscribemode || stores().running" />
       </a-form-item>
       <a-form-item label="更新频率">
         <div class="freq">
-          <a-input-number v-model:value="stores().formData.updateFreq" style="margin-right: 10px;" :disabled="stores().running" />
+          <a-input-number v-model:value="stores().formData.updatefreq" style="margin-right: 10px;" :disabled="stores().running" />
           分钟
         </div>
       </a-form-item>
       <a-form-item label="Aria2 地址">
-        <a-input v-model:value="stores().formData.ariaLink" :disabled="stores().running" />
+        <a-input v-model:value="stores().formData.arialink" :disabled="stores().running" />
       </a-form-item>
       <a-form-item label="Aria2 密钥">
-        <a-input-password v-model:value="stores().formData.ariaSecret" placeholder="没有则留空" :disabled="stores().running" />
+        <a-input-password v-model:value="stores().formData.ariasecret" placeholder="没有则留空" :disabled="stores().running" />
       </a-form-item>
-      <a-form-item label="手动添加" v-show="!stores().formData.subscribeMode">
+      <a-form-item label="手动添加" v-show="!stores().formData.subscribemode">
         <a-button style="margin-bottom: 10px;" @click="showBangumiModal" :disabled="stores().running">添加番剧</a-button>
         <a-tooltip placement="bottomLeft" title="仅列表模式可用" arrow-point-at-center>
           <a-button :icon="h(QuestionOutlined)" type="text" style="margin-left: 10px;"></a-button>
@@ -103,10 +103,10 @@ const {addForm, openRuleModal, showRuleModal, addRuleHandler, delRuleHandler}=ru
 const {openBangumiModal, showBangumiModal, bangumiForm, addBangumiHandler, delBangumi}=bangumiModal();
 
 const modeTip=computed(()=>{
-  return stores().formData.subscribeMode ? "订阅模式需要在Mikan Project上注册并且选择需要番剧订阅" : "列表模式将会从所有的番剧列表中筛选需要下载的内容进行下载"
+  return stores().formData.subscribemode ? "订阅模式需要在Mikan Project上注册并且选择需要番剧订阅" : "列表模式将会从所有的番剧列表中筛选需要下载的内容进行下载"
 })
 const rssLabel=computed(()=>{
-  return stores().formData.subscribeMode ? "订阅的RSS链接" : "列表RSS链接"
+  return stores().formData.subscribemode ? "订阅的RSS链接" : "列表RSS链接"
 })
 const labelCol = { style: { width: '150px' } };
 const wrapperCol = { style: { width: '800px' } };

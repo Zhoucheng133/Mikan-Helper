@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import stores from ".";
 
 export default defineStore('requests', ()=>{
-  const baseURL="";
+  const baseURL="http://127.0.0.1:8811";
   const getStatus=async ()=>{
     const response=await axios.get(baseURL+"/api/status");
     if(response.data.status=="ok"){
@@ -11,9 +11,10 @@ export default defineStore('requests', ()=>{
     }else{
       stores().setRunning(false);
     }
-    // console.log(response.data);
-    if(response.data.formData.rssLink!=""){
+    if(response.data.formData.rsslink!=""){
       stores().setFormData(response.data.formData);
+      console.log("?");
+      
     }
   }
   const getLog=async ()=>{

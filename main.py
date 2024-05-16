@@ -1,21 +1,22 @@
 from flask import Flask, jsonify, request, send_file, send_from_directory
 import threading
-import time
 import feedparser
 import datetime
 import requests
+import configparser
+from flask_cors import CORS
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 formData={
-    'subscribeMode': True,
-    'rssLink': "",
+    'subscribemode': True,
+    'rsslink': "",
     'bangumi': [],
     'rules': [],
-    'updateFreq': 15,
-    'ariaLink': "",
-    'ariaSecret': "",
+    'updatefreq': 15,
+    'arialink': "",
+    'ariasecret': "",
 }
 log=[
     
@@ -38,7 +39,7 @@ class ServerThread(threading.Thread):
     "method": "aria2.addUri",
     "id": 1,
     "params": [
-        "token:{formData['ariaSecret']}",
+        "token:{formData['ariasecret']}",
         ["{url}"],
         {{
             "split": "5",
@@ -48,12 +49,12 @@ class ServerThread(threading.Thread):
     ]
 }}
         '''
-        requests.post(formData['ariaLink'], data)
+        requests.post(formData['arialink'], data)
 
     def run(self):
         while not self._stop_event.is_set():
             self.mainLoop()
-            self._timer = threading.Timer(formData['updateFreq']*60, lambda: print("Timer End"))
+            self._timer = threading.Timer(formData['updatefreq']*60, lambda: print("Timer End"))
             self._timer.start()
             self._timer.join()
 
@@ -69,7 +70,7 @@ class ServerThread(threading.Thread):
 
     def rssRequest(self):
         try:
-            rss_data=feedparser.parse(requests.get(formData['rssLink']).text)
+            rss_data=feedparser.parse(requests.get(formData['rsslink']).text)
             return rss_data
         except requests.RequestException as e:
             self.addLog("err", "请求出错")
@@ -87,7 +88,7 @@ class ServerThread(threading.Thread):
                 exclude.append(item['value'])
 
         # 记得把False改为True
-        if formData["subscribeMode"]==True:
+        if formData["subscribemode"]==True:
             for item in newItems:
                 if all(exclude_word not in item['title'] for exclude_word in exclude) and all(include_word in item['title'] for include_word in include):
                     download_ls.append(item)
@@ -159,6 +160,12 @@ def startServer():
     global server_thread
     global formData
     formData = request.json
+
+    config=configparser.ConfigParser()
+    config['formData']=formData
+    with open('config.ini', 'w', encoding='utf-8') as configfile:
+        config.write(configfile)
+
     if server_thread is None or not server_thread.is_alive():
         server_thread = ServerThread()
         server_thread.start()
@@ -178,4 +185,17 @@ def stopServer():
 
 
 if __name__ == '__main__':
+    config = configparser.ConfigParser()
+    config.read('config.ini', encoding='utf-8')
+    if len(config.sections()) == 0:
+        print("空配置")
+    else:
+        options=config.options('formData')
+        formData['arialink']=config.get('formData', 'arialink')
+        formData['ariasecret']=config.get('formData', 'ariasecret')
+        formData['bangumi']=eval(config.get('formData', 'bangumi'))
+        formData['rsslink']=config.get('formData', 'rsslink')
+        formData['rules']=eval(config.get('formData', 'rules'))
+        formData['subscribemode']=eval(config.get('formData', 'subscribemode'))
+        formData['updatefreq']=eval(config.get('formData', 'updatefreq'))
     app.run("0.0.0.0", 8811)

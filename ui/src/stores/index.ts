@@ -18,12 +18,12 @@ export default defineStore("pinia", ()=>{
   let running=ref(false);
   let log=ref([]);
   let formData=ref({
-    subscribeMode: true,
-    rssLink: "",
+    subscribemode: true,
+    rsslink: "",
     rules: [] as Rule[],
-    updateFreq: 15,
-    ariaLink: "",
-    ariaSecret: "",
+    updatefreq: 15,
+    arialink: "",
+    ariasecret: "",
     bangumi: [] as Bangumi[]
   });
 
@@ -52,10 +52,10 @@ export default defineStore("pinia", ()=>{
   }
   const toggleRun=(val: boolean)=>{
     if(val){
-      if(formData.value.rssLink==""){
+      if(formData.value.rsslink==""){
         message.error("RSS地址不能为空");
         running.value=false;
-      }else if(formData.value.ariaLink==""){
+      }else if(formData.value.arialink==""){
         message.error("Aria2 地址不能为空");
         running.value=false;
       }else{
@@ -72,8 +72,8 @@ export default defineStore("pinia", ()=>{
   }
 
   watch(formData, (newVal)=>{
-    if(newVal.subscribeMode==false){
-      formData.value.rssLink="https://mikanime.tv/RSS/Classic";
+    if(newVal.subscribemode==false){
+      formData.value.rsslink="https://mikanime.tv/RSS/Classic";
     }
   }, {deep: true})
 
