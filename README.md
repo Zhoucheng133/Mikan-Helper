@@ -11,9 +11,20 @@
 
 ### 使用Docker安装
 
-[详细的Docker镜像点击这里](https://hub.docker.com/repository/docker/zhouc1230/mikan-helper/general)
+你可以通过命令先创建一个Docker镜像:
 
-你需要将端口号从8811映射到主机的某个端口号
+```bash
+# 假设你当前位于项目目录中
+docker build -t mikan-helper .
+# 注意最后有一个点
+```
+
+然后你需要运行这个Docker容器
+
+```bash
+# 注意，主机端口号需要你自行设定，如果你的8811端口号没有被占用，你可以设定主机端口也为8811
+docker run -d -p <主机端口>:8811 mikan-helper --restart always
+```
 
 ### 通用步骤
 - 安装[Python3](https://www.python.org/)，你可以通过官网下载安装，或者Linux的`apt`进行安装
