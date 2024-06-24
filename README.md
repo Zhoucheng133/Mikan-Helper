@@ -78,3 +78,7 @@ docker run -d -p <主机端口>:8811 mikan-helper --restart always
 
 如果你想要停止监听，在`http://<ip地址>:8811`中关闭服务就可以了  
 如果你想要停止整个服务，结束终端就可以了。如果你使用通过`nohup`在后台运行的，通过命令`ps aux | grep python`找到进程号（一般为第二列），通过命令`kill <进程id>`即可
+
+## 部署
+sudo docker build -t mikan_helper .
+sudo docker run -d --restart always -p 8811:8811 --name mikan_helper <镜像id>

@@ -5,6 +5,7 @@ import datetime
 import requests
 import configparser
 from flask_cors import CORS
+from gevent import pywsgi
 
 app = Flask(__name__)
 CORS(app)
@@ -198,4 +199,6 @@ if __name__ == '__main__':
         formData['rules']=eval(config.get('formData', 'rules'))
         formData['subscribemode']=eval(config.get('formData', 'subscribemode'))
         formData['updatefreq']=eval(config.get('formData', 'updatefreq'))
-    app.run("0.0.0.0", 8811)
+    # app.run("0.0.0.0", 8811)
+    server=pywsgi.WSGIServer(('0.0.0.0', 8811), app, log=None)
+    server.serve_forever()
