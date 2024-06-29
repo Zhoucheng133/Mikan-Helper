@@ -58,6 +58,12 @@ export default defineStore("pinia", ()=>{
       }else if(formData.value.arialink==""){
         message.error("Aria2 地址不能为空");
         running.value=false;
+      }else if(!(formData.value.arialink.startsWith('http://') || formData.value.arialink.startsWith('https://'))){
+        message.error("Aria2 地址不合法");
+        running.value=false;
+      }else if(!(formData.value.rsslink.startsWith('http://') || formData.value.rsslink.startsWith('https://'))){
+        message.error("RSS 订阅地址不合法");
+        running.value=false;
       }else{
         requets().runServer();
       }
