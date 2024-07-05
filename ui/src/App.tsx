@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./styles/style.css"
-import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table } from 'antd';
+import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal } from 'antd';
 import { showLog, initState, toggleRun } from "./hook";
+import { nanoid } from "nanoid";
 
 
 function App() {
@@ -13,9 +14,13 @@ function App() {
   const [freq, setFreq]=useState(15);
   const [airaLink, setAriaLink]=useState("");
   const [airaSecret, setAriaSecret]=useState("");
-  const [bangumi, setBangumi]=useState([]);
+  const [bangumi, setBangumi]=useState<any[]>([]);
   const [rules, setRules]=useState([]);
-
+  const [openAddBangumi, setOpenAddBangumi]=useState(false);
+  const [bangumiName, setBangumiName]=useState("");
+  const [bangumiAss, setBangumiAss]=useState("");
+  const [openAddRule, setOpenAddRule]=useState(false);
+  
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -52,7 +57,28 @@ function App() {
   }
 
   function delBagumi(id: string){
+    
+  }
+  
+  function addBangumi(){
+    setOpenAddBangumi(true);
+  }
 
+  function addBangumiHanlder(){
+    const newItem={
+      id: nanoid(),
+      ass: bangumiAss,
+      title: bangumiName,
+    }
+    setBangumi([...bangumi, newItem]);
+    modalCancel();
+  }
+
+  function modalCancel(){
+    setOpenAddBangumi(false);
+    setOpenAddRule(false);
+    setBangumiName("");
+    setBangumiAss("");
   }
 
   const RuleColumn=[
@@ -118,10 +144,7 @@ function App() {
     setMode(value.target.value);
   }
 
-  function addBangumi(){
-    // console.log("add!");
-    
-  }
+  
 
   return (
     <div className="bg" style={bgStyle}>
@@ -195,6 +218,26 @@ function App() {
         </div>
         <Table style={{"marginTop": '10px'}} columns={RuleColumn} dataSource={rules} pagination={false}/>
       </div>
+      <Modal
+        open={openAddBangumi}
+        title="添加番剧"
+        onOk={addBangumiHanlder}
+        centered={true}
+        onCancel={()=>modalCancel()}
+      >
+        <div className="item">
+          <div className="label">字幕组</div>
+          <div className="content">
+            <Input value={bangumiAss} onChange={(e) => setBangumiAss(e.target.value)}></Input>
+          </div>
+        </div>
+        <div className="item">
+          <div className="label">标题</div>
+          <div className="content">
+            <Input value={bangumiName} onChange={(e) => setBangumiName(e.target.value)}></Input>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
