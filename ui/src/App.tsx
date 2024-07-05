@@ -207,7 +207,7 @@ function App() {
         }
         {
           mode=='list' &&
-          <Table style={{"marginTop": '10px'}} columns={BangumiColumn} dataSource={bangumi} pagination={false} />
+          <Table rowKey="id" style={{"marginTop": '10px'}} columns={BangumiColumn} dataSource={bangumi} pagination={false} />
         }
         <hr color="lightgrey"/>
         <div className="item">
@@ -216,7 +216,7 @@ function App() {
             <Button onClick={() => addRule()}>添加规则</Button>
           </div>
         </div>
-        <Table style={{"marginTop": '10px'}} columns={RuleColumn} dataSource={rules} pagination={false}/>
+        <Table rowKey="id" style={{"marginTop": '10px'}} columns={RuleColumn} dataSource={rules} pagination={false}/>
       </div>
       <Modal
         open={openAddBangumi}
