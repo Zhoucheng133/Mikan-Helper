@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles/style.css"
 import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal, Select } from 'antd';
-import { showLog, initState, toggleRun } from "./hook";
+import { initState, toggleRun } from "./hook";
 import { nanoid } from "nanoid";
 
 
@@ -161,7 +161,18 @@ function App() {
     setMode(value.target.value);
   }
 
-  
+  function showLog(){
+    Modal.info({
+      title: '日志',
+      centered: true,
+      content: (
+        <div>
+          
+        </div>
+      ),
+      onOk() {},
+    });
+  }
 
   return (
     <div className="bg" style={bgStyle}>
@@ -238,7 +249,7 @@ function App() {
       <Modal
         open={openAddBangumi}
         title="添加番剧"
-        onOk={addBangumiHanlder}
+        onOk={()=>addBangumiHanlder()}
         centered={true}
         onCancel={()=>modalCancel()}
       >
@@ -259,7 +270,7 @@ function App() {
       <Modal
         open={openAddRule}
         title="添加规则"
-        onOk={addRuleHandler}
+        onOk={()=>addRuleHandler()}
         centered={true}
         onCancel={()=>modalCancel()}
       >
