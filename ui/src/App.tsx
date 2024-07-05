@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./styles/style.css"
-import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal } from 'antd';
+import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal, Select } from 'antd';
 import { showLog, initState, toggleRun } from "./hook";
 import { nanoid } from "nanoid";
 
@@ -15,11 +15,13 @@ function App() {
   const [airaLink, setAriaLink]=useState("");
   const [airaSecret, setAriaSecret]=useState("");
   const [bangumi, setBangumi]=useState<any[]>([]);
-  const [rules, setRules]=useState([]);
+  const [rules, setRules]=useState<any[]>([]);
   const [openAddBangumi, setOpenAddBangumi]=useState(false);
   const [bangumiName, setBangumiName]=useState("");
   const [bangumiAss, setBangumiAss]=useState("");
   const [openAddRule, setOpenAddRule]=useState(false);
+  const [ruleType, setRuleType]=useState("exclude");
+  const [ruleValue, setRuleValue]=useState("");
   
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -49,11 +51,22 @@ function App() {
   }
 
   function addRule(){
+    setOpenAddRule(true);
+  }
 
+  function addRuleHandler(){
+    setRules([...rules, {
+      id: nanoid(),
+      type: ruleType,
+      value: ruleValue,
+    }]);
+    modalCancel();
   }
 
   function delRule(id: string){
-
+    let data=rules;
+    data=data.filter(item=>item.id!=id);
+    setRules(data);
   }
 
   function delBangumi(id: string){
@@ -81,6 +94,8 @@ function App() {
     setOpenAddRule(false);
     setBangumiName("");
     setBangumiAss("");
+    setRuleType("exclude");
+    setRuleValue("");
   }
 
   const RuleColumn=[
@@ -237,6 +252,30 @@ function App() {
           <div className="label">标题</div>
           <div className="content">
             <Input value={bangumiName} onChange={(e) => setBangumiName(e.target.value)}></Input>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        open={openAddRule}
+        title="添加规则"
+        onOk={addRuleHandler}
+        centered={true}
+        onCancel={()=>modalCancel()}
+      >
+        <div className="item">
+          <div className="label">规则类型</div>
+          <div className="content">
+            <Select value={ruleType} onChange={(value)=>setRuleType(value)}>
+              <Select.Option value="exclude">排除</Select.Option>
+              <Select.Option value="include">包含</Select.Option>
+            </Select>
+          </div>
+        </div>
+        <div className="item">
+          <div className="label">值</div>
+          <div className="content">
+            <Input value={ruleValue} onChange={(e) => setRuleValue(e.target.value)}></Input>
           </div>
         </div>
       </Modal>
