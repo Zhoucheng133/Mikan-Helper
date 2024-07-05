@@ -56,8 +56,10 @@ function App() {
 
   }
 
-  function delBagumi(id: string){
-    
+  function delBangumi(id: string){
+    let data=bangumi;
+    data=data.filter(item=>item.id!=id);
+    setBangumi(data);
   }
   
   function addBangumi(){
@@ -127,7 +129,7 @@ function App() {
       key: 'operation',
       width: '70px',
       render: (_: any, record: any) => (
-          <a onClick={()=>delBagumi(record.id)}>删除</a>
+          <a onClick={()=>delBangumi(record.id)}>删除</a>
       ),
     }
   ]
