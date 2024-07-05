@@ -11,7 +11,7 @@ body{
 }
 .item{
   display: grid;
-  grid-template-columns: 100px auto;
+  grid-template-columns: 80px auto;
   height: 35px;
   column-gap: 10px;
   align-items: center;
@@ -22,4 +22,5 @@ body{
 }
 .content{
   display: flex;
+  align-items: center;
 }
