@@ -10,7 +10,12 @@ async function initState(){
 }
 
 function toggleRun(){
-
+  
 }
 
-export { initState, toggleRun };
+async function getLog(){
+  const logData=await axios.get(`${baseURL}/api/log`);
+  return logData.data;
+}
+
+export { initState, toggleRun, getLog };

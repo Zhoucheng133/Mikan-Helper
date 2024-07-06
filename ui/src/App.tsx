@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./styles/style.css"
-import { FloatButton, Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal, Select } from 'antd';
-import { initState, toggleRun } from "./hook";
+import { Tag, Switch, Radio, Input, InputNumber, Button, Table, Modal, Select, message } from 'antd';
+import { initState, toggleRun, getLog } from "./hook";
 import { nanoid } from "nanoid";
 
 
@@ -22,6 +22,7 @@ function App() {
   const [openAddRule, setOpenAddRule]=useState(false);
   const [ruleType, setRuleType]=useState("exclude");
   const [ruleValue, setRuleValue]=useState("");
+  // const [logs, setLogs]=useState<any[]>([]);
   
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -161,13 +162,27 @@ function App() {
     setMode(value.target.value);
   }
 
-  function showLog(){
+  async function showLog(){
+    const response=await getLog();
+    // console.log(response.log);
+    
+    if(!response.status){
+      message.error('获取日志失败');
+      return;
+    }
     Modal.info({
       title: '日志',
       centered: true,
       content: (
-        <div>
-          
+        <div className="logBg">
+          {
+            response.log.map((item: any)=>
+              <div key={item.time} className="logItem" style={item.type=='ok'?{"color": "green"}:{"color": "red"}}>
+                <div className="logTitle">{item.value}</div>
+                <div className="logTime">{item.time}</div>
+              </div>
+            )
+          }
         </div>
       ),
       onOk() {},
@@ -176,7 +191,6 @@ function App() {
 
   return (
     <div className="bg" style={bgStyle}>
-      <FloatButton onClick={() => showLog()} />
       <div className="form">
         <div className="item">
           <div className="label">运行状态</div>
@@ -184,6 +198,7 @@ function App() {
             { running && <Tag color="success">运行中</Tag>}
             { !running && <Tag color="warning">等待中</Tag>}
             <Switch style={{'marginLeft': '10px'}} value={running} onChange={()=>toggle()}/>
+            <Button type="link" style={{"marginLeft": "10px"}} onClick={()=>showLog()}>日志</Button>
           </div>
         </div>
         <div className="item">

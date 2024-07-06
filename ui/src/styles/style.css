@@ -24,3 +24,13 @@ body{
   display: flex;
   align-items: center;
 }
+.logBg{
+  max-height: 500px;
+  overflow-y: auto;
+}
+.logItem{
+  display: grid;
+  grid-template-columns: auto 140px;
+  align-items: center;
+  user-select: none;
+}
