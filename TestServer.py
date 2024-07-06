@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     xml_content=''
-    with open('ui/src/Test/after.xml', 'r', encoding='utf-8') as file:
+    with open('Test/after.xml', 'r', encoding='utf-8') as file:
         xml_content = file.read()
     return Response(xml_content, mimetype='application/xml')
 
