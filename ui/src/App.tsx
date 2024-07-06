@@ -187,7 +187,7 @@ function App() {
         <div className="logBg">
           {
             response.log.map((item: any)=>
-              <div key={item.time} className="logItem" style={item.type=='ok'?{"color": "green"}:{"color": "red"}}>
+              <div key={item.time} className="logItem" style={item.type=='ok'?{"color": "green"}:item.type=='err'?{"color": "red"}:{"color": "blue"}}>
                 <div className="logTitle">{item.value}</div>
                 <div className="logTime">{item.time}</div>
               </div>
