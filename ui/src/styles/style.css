@@ -34,3 +34,8 @@ body{
   align-items: center;
   user-select: none;
 }
+.logTitle{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

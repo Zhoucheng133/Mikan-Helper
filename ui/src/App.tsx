@@ -173,6 +173,7 @@ function App() {
     Modal.info({
       title: '日志',
       centered: true,
+      width: width<720?width-20 : 700,
       content: (
         <div className="logBg">
           {
