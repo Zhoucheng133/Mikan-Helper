@@ -150,9 +150,18 @@ function App() {
     }
   ]
 
-  function toggle(){
-    toggleRun();
-    setRunning(!running);
+  async function toggle(){
+    if(rssLink.length==0){
+      message.error("没有输入RSS链接");
+      return;
+    }else if(airaLink.length==0){
+      message.error("没有输入Aria地址")
+      return;
+    }
+    const response=await toggleRun(running, mode=='subscribe'? true: false, rssLink, rules, freq, airaLink, airaSecret, bangumi);
+    if(response){
+      setRunning(!running);
+    }
   }
 
   function changeMode(value: any){
