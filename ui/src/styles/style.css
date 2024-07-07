@@ -30,7 +30,7 @@ body{
 }
 .logItem{
   display: grid;
-  grid-template-columns: auto 140px;
+  grid-template-columns: auto 150px;
   align-items: center;
   user-select: none;
 }
