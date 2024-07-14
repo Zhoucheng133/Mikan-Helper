@@ -138,6 +138,10 @@ server_thread = None
 def home():
     return send_from_directory('ui/dist', "index.html")
 
+@app.route('/vite.svg')
+def icon():
+    return send_file("ui/dist/vite.svg")
+
 @app.route('/assets/<path:path>')
 def assets(path):
     return send_file("ui/dist/assets/"+path)
