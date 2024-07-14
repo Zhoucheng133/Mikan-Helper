@@ -123,7 +123,7 @@ function App() {
       width: '70px',
       key: 'operation',
       render: (_: any, record: any) => (
-          <a onClick={()=>delRule(record.id)}>删除</a>
+        <Button type="text" danger onClick={()=>delRule(record.id)} disabled={running}>删除</Button>
       ),
     }
   ]
@@ -145,7 +145,7 @@ function App() {
       key: 'operation',
       width: '70px',
       render: (_: any, record: any) => (
-          <a onClick={()=>delBangumi(record.id)}>删除</a>
+          <Button type="text" danger onClick={()=>delBangumi(record.id)} disabled={running}>删除</Button>
       ),
     }
   ]
@@ -254,7 +254,7 @@ function App() {
           <div className="item">
             <div className="label">手动添加</div>
             <div className="content">
-              <Button onClick={()=>addBangumi()}>添加番剧</Button>
+              <Button onClick={()=>addBangumi()} disabled={running}>添加番剧</Button>
             </div>
           </div>
         }
@@ -266,7 +266,7 @@ function App() {
         <div className="item">
           <div className="label">规则</div>
           <div className="content">
-            <Button onClick={() => addRule()}>添加规则</Button>
+            <Button onClick={() => addRule()} disabled={running}>添加规则</Button>
           </div>
         </div>
         <Table rowKey="id" style={{"marginTop": '10px'}} columns={RuleColumn} dataSource={rules} pagination={false}/>
