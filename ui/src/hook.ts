@@ -1,7 +1,8 @@
 import axios from "axios";
 
 
-const baseURL=""
+const baseURL="";
+// const baseURL="http://192.168.31.40:8811";
 
 async function initState(){
   const formData=await axios.get(`${baseURL}/api/status`);
