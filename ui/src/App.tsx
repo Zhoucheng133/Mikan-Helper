@@ -47,7 +47,7 @@ function App() {
       setBangumi(initData.formData.bangumi);
       setRules(initData.formData.rules);
     } catch (e) {
-      console.log(e);
+      setRunning(false);
     }
   }
 
@@ -165,7 +165,7 @@ function App() {
   }
 
   function changeMode(value: any){
-    if(value.target.value=='subscribe'){
+    if(value.target.value!='subscribe'){
       setRssLink('https://mikanime.tv/RSS/Classic');
     }
     setMode(value.target.value);
@@ -212,7 +212,7 @@ function App() {
           </div>
         </div>
         <div className="item">
-          <div className="label">运行状态</div>
+          <div className="label">运行模式</div>
           <div className="content">
             <Radio.Group defaultValue="subscribe" buttonStyle="solid" value={mode} onChange={(value)=>changeMode(value)} disabled={running}>
               <Radio.Button value="subscribe">订阅</Radio.Button>
@@ -223,7 +223,7 @@ function App() {
         <div className="item">
           <div className="label">RSS 链接</div>
           <div className="content">
-            <Input value={rssLink} onChange={(e) => setRssLink(e.target.value)} disabled={running || mode=='subscribe'}/>
+            <Input value={rssLink} onChange={(e) => setRssLink(e.target.value)} disabled={running || mode!='subscribe'}/>
           </div>
         </div>
         <div className="item">
