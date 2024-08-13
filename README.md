@@ -2,10 +2,10 @@
 
 如果你希望在一般的系统中使用，你可以尝试使用[Motrix](https://motrix.app/)，如果你在服务器上使用，建议使用Docker安装Aria2
 
-本项目由Python & Vue开发
+本项目由Python & React开发
 
 ## 截图
-![截图](demo/screenshot.png)
+![截图](demo/demo.png)
 
 ## 使用
 
